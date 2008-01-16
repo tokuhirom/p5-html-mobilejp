@@ -97,3 +97,41 @@ sub gps_a {
 }
 
 1;
+__END__
+
+=for stopwords mobile-jp html TODO CGI ezweb
+
+=encoding utf8
+
+=head1 NAME
+
+HTML::MobileJp::Plugin::GPS - generate GPS tags
+
+=head1 SYNOPSIS
+
+    use HTML::MobileJp;
+    gps_a(
+        carrier => 'I',
+        is_gps => 0,
+        callback_url => 'http://example.com/gps/jLKJFJDSL',
+    );
+    # => <a href="http://w1m.docomo.ne.jp/cp/iarea?ecode=OPENAREACODE&amp;msn=OPENAREAKEY&amp;posinfo=1&amp;nl=http%3A%2F%2Fexample.com%2Fgps%2FjLKJFJDSL">
+
+=head1 DESCRIPTION
+
+generate 'A' tag for send the location information.
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno E<lt>tokuhirom aaaatttt gmail dotottto commmmmE<gt>
+
+=head1 SEE ALSO
+
+L<HTML::MobileJp>, L<http://www.au.kddi.com/ezfactory/tec/spec/wap_tag5.html>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
