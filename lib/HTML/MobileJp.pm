@@ -6,6 +6,7 @@ use base qw/Exporter/;
 
 my @modules = map { __PACKAGE__ . "::Plugin::$_" } qw/
   GPS
+  EZweb::Object
   /;
 
 our @EXPORT;
@@ -23,7 +24,7 @@ for my $module (@modules) {
 1;
 __END__
 
-=for stopwords mobile-jp html
+=for stopwords mobile-jp html TODO CGI ezweb
 
 =head1 NAME
 
@@ -49,6 +50,12 @@ HTML::MobileJp - generate mobile-jp html tags
 =head1 DESCRIPTION
 
 HTML::MobileJp is html tag generator for Japanese mobile phone.
+
+=head1 TODO
+
+    http://www.au.kddi.com/ezfactory/tec/dlcgi/download_1.html
+
+download CGI for ezweb.
 
 =head1 AUTHOR
 
