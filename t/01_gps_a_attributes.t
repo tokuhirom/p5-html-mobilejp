@@ -67,7 +67,7 @@ carrier: V
 is_gps: 1
 callback_url: http://example.com/gps/jLKJFJDSL
 --- expected
-href: location:auto?url=http%3A%2F%2Fexample.com%2Fgps%2FjLKJFJDSL
+href: location:auto?url=http://example.com/gps/jLKJFJDSL
 
 ===
 --- input

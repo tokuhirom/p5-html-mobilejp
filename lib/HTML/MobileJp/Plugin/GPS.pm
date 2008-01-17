@@ -54,7 +54,8 @@ my $codes = +{
     V => +{
         gps => sub {
             # http://developers.softbankmobile.co.jp/dp/tool_dl/web/position.php
-            +{ href => 'location:auto?url=' . uri_escape($_[0]) };
+            # DO NOT uri_escape. SOFTBANK PHONES REQUIRE RAW URI.
+            +{ href => 'location:auto?url=' . $_[0] };
         },
         basic => sub {
             # http://developers.softbankmobile.co.jp/dp/tool_dl/web/position.php
