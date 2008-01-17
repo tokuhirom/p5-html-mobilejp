@@ -75,5 +75,5 @@ carrier: H
 is_gps: 0
 callback_url: http://example.com/gps/jLKJFJDSL
 --- expected
-href: http://location.request/dummy.cgi?my=http%3A%2F%2Fexample.com%2Fgps%2FjLKJFJDSL&pos=$location
+href: http://location.request/dummy.cgi?my=http://example.com/gps/jLKJFJDSL&pos=$location
 
