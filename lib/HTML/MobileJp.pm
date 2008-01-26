@@ -1,7 +1,7 @@
 package HTML::MobileJp;
 use strict;
 use warnings;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use base qw/Exporter/;
 
 my @modules = map { __PACKAGE__ . "::Plugin::$_" } qw/
