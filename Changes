@@ -1,5 +1,9 @@
 Revision history for Perl extension HTML::MobileJp
 
+0.05
+
+    - this module needs perl 5.8 or later.
+
 0.04
 
     - nop.
