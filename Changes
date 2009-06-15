@@ -1,5 +1,9 @@
 Revision history for Perl extension HTML::MobileJp
 
+0.06
+
+    - Plugin::GPS: support <form> tag.
+
 0.05
 
     - this module needs perl 5.8 or later.

@@ -27,3 +27,5 @@ t/00_compile.t
 t/01_gps_a_attributes.t
 t/02_gps_a.t
 t/03_ezweb_object.t
+t/04_gps_form_attributes.t
+t/05_gps_form.t
