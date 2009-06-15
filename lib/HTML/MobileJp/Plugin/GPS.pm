@@ -1,65 +1,115 @@
 package HTML::MobileJp::Plugin::GPS;
 use strict;
 use warnings;
-use URI::Escape;
+use URI::Escape 'uri_escape';
 use Params::Validate;
 use HTML::Entities;
 use base qw/Exporter/;
+use Carp();
 
-our @EXPORT = qw/gps_a gps_a_attributes/;
+our @EXPORT = qw/gps_a gps_a_attributes gps_form_attributes gps_form/;
 
 my $codes = +{
     E => +{
-        basic => sub {
+        basic => {
             # http://www.au.kddi.com/ezfactory/tec/spec/eznavi.html
-            +{ href => 'device:location?url=' . uri_escape $_[0] };
+            a => sub {
+                +{ href => 'device:location?url=' . uri_escape $_[0] };
+            },
+            form => sub {
+                +{ action => 'device:location?url=' . uri_escape $_[0] };
+            },
         },
-        gps => sub {
+        gps => {
             # http://www.siisise.net/gps.html#augps
             # datum:wgs84, unit:dms
-            +{
-                href => (
-                        'device:gpsone?url='
-                      . uri_escape( $_[0] )
-                      . '&ver=1&datum=0&unit=0&acry=0&number=0'
-                )
-            };
+            a => sub {
+                +{
+                    href => (
+                            'device:gpsone?url='
+                        . uri_escape( $_[0] )
+                        . '&ver=1&datum=0&unit=0&acry=0&number=0'
+                    )
+                }
+            },
+            form => sub {
+                +{
+                    action => 'device:gpsone',
+                    hidden => +{
+                        url    => $_[0],
+                        ver    => 1,
+                        datum  => 0,
+                        unit   => 0,
+                        acry   => 0,
+                        number => 0,
+                    },
+                },
+            },
           }
     },
     I => +{
-        gps => sub {
+        gps => {
             # http://www.nttdocomo.co.jp/service/imode/make/content/gps/
-            +{ href => $_[0], lcs => 'lcs' };
+            'a'    => sub { +{ href   => $_[0], lcs => 'lcs' } },
+            'form' => sub { +{ action => $_[0], lcs => 'lcs' } },
         },
-        basic => sub {
+        basic => {
             # http://www.nttdocomo.co.jp/service/imode/make/content/iarea/
-            +{
-                href => (
-                        'http://w1m.docomo.ne.jp/cp/iarea'
-                      . '?ecode=OPENAREACODE&msn=OPENAREAKEY&posinfo=1&nl='
-                      . uri_escape $_[0]
-                )
-            };
+            a => sub {
+                +{
+                    href => (
+                            'http://w1m.docomo.ne.jp/cp/iarea'
+                        . '?ecode=OPENAREACODE&msn=OPENAREAKEY&posinfo=1&nl='
+                        . uri_escape $_[0]
+                    )
+                };
+            },
+            form => sub {
+                +{
+                    action => "http://w1m.docomo.ne.jp/cp/iarea",
+                    hidden => {
+                        ecode   => 'OPENAREACODE',
+                        msn     => 'OPENAREAKEY',
+                        posinfo => 1,
+                        nl      => $_[0],
+                    },
+                },
+            },
         },
     },
     H => +{
-        basic => sub {
+        basic => {
             # http://www.willcom-inc.com/ja/service/contents_service/club_air_edge/for_phone/homepage/index.html
             # DO NOT uri_escape. WILLCOM PHONES REQUIRE RAW URI.
-            +{      href => 'http://location.request/dummy.cgi?my='
-                  . $_[0]
-                  . '&pos=$location' };
+            a => sub {
+                +{      href => 'http://location.request/dummy.cgi?my='
+                    . $_[0]
+                    . '&pos=$location' };
+            },
+            form => sub {
+                Carp::croak("form type is not supported on willcom(maybe)");
+            },
         },
     },
     V => +{
-        gps => sub {
-            # http://developers.softbankmobile.co.jp/dp/tool_dl/web/position.php
+        gps => +{
+            # see HTML編 in http://creation.mb.softbank.jp/web/web_doc.html
             # DO NOT uri_escape. SOFTBANK PHONES REQUIRE RAW URI.
-            +{ href => 'location:auto?url=' . $_[0] };
+            a => sub {
+                +{ href => 'location:auto?url=' . $_[0] }
+            },
+            form => sub {
+                +{ action => 'location:auto?url=' . $_[0] }
+            },
         },
-        basic => sub {
-            # http://developers.softbankmobile.co.jp/dp/tool_dl/web/position.php
-            +{ href => $_[0], z => 'z' };
+        basic => {
+            # see HTML編 in http://creation.mb.softbank.jp/web/web_doc.html
+            a => sub {
+                +{ href => $_[0], z => 'z' };
+            },
+            form => sub {
+                +{ action => $_[0], z => 'z' };
+            },
         }
     },
 };
@@ -75,7 +125,21 @@ sub gps_a_attributes {
     );
     my %args = @_;
 
-    $codes->{$args{carrier}}->{$args{is_gps} ? 'gps' : 'basic'}->($args{callback_url});
+    $codes->{$args{carrier}}->{$args{is_gps} ? 'gps' : 'basic'}->{a}->($args{callback_url});
+}
+
+sub gps_form_attributes {
+    validate(
+        @_,
+        +{
+            callback_url => qr{^https?://},
+            carrier      => qr{^[IEVH]$},
+            is_gps       => 1,
+        }
+    );
+    my %args = @_;
+
+    $codes->{$args{carrier}}->{$args{is_gps} ? 'gps' : 'basic'}->{'form'}->($args{callback_url});
 }
 
 sub gps_a {
@@ -96,6 +160,32 @@ sub gps_a {
         $ret .= qq{ $name="} . encode_entities($attributes->{$name}) . q{"};
     }
     "<a$ret>";
+}
+
+sub gps_form {
+    validate(
+        @_,
+        +{
+            callback_url => qr{^https?://},
+            carrier      => qr{^[IEVH]$},
+            is_gps       => 1,
+        }
+    );
+    my %args = @_;
+
+    my $attributes = gps_form_attributes(%args);
+
+    my $hidden = delete $attributes->{hidden};
+
+    my $ret = "";
+    for my $name (sort { $a cmp $b } keys %$attributes) {
+        $ret .= qq{ $name="} . encode_entities($attributes->{$name}) . q{"};
+    }
+    $ret = "<form$ret>";
+    for my $name (sort { $a cmp $b } keys %$hidden) {
+        $ret .= qq!\n<input type="hidden" name="$name" value="$hidden->{$name}" />!;
+    }
+    $ret;
 }
 
 1;
@@ -121,7 +211,7 @@ HTML::MobileJp::Plugin::GPS - generate GPS tags
 
 =head1 DESCRIPTION
 
-generate 'A' tag for send the location information.
+This module generates 'A' tag and 'form' tag for sending the location information.
 
 =head1 AUTHOR
 
