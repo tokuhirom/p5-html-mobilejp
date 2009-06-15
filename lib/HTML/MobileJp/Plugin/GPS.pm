@@ -115,7 +115,7 @@ my $codes = +{
 };
 
 sub gps_a_attributes {
-    validate(
+    my %args = validate(
         @_,
         +{
             callback_url => qr{^https?://},
@@ -123,13 +123,12 @@ sub gps_a_attributes {
             is_gps       => 1,
         }
     );
-    my %args = @_;
 
     $codes->{$args{carrier}}->{$args{is_gps} ? 'gps' : 'basic'}->{a}->($args{callback_url});
 }
 
 sub gps_form_attributes {
-    validate(
+    my %args = validate(
         @_,
         +{
             callback_url => qr{^https?://},
@@ -137,13 +136,12 @@ sub gps_form_attributes {
             is_gps       => 1,
         }
     );
-    my %args = @_;
 
     $codes->{$args{carrier}}->{$args{is_gps} ? 'gps' : 'basic'}->{'form'}->($args{callback_url});
 }
 
 sub gps_a {
-    validate(
+    my %args = validate(
         @_,
         +{
             callback_url => qr{^https?://},
@@ -151,7 +149,6 @@ sub gps_a {
             is_gps       => 1,
         }
     );
-    my %args = @_;
 
     my $attributes = gps_a_attributes(%args);
 
@@ -163,7 +160,7 @@ sub gps_a {
 }
 
 sub gps_form {
-    validate(
+    my %args = validate(
         @_,
         +{
             callback_url => qr{^https?://},
@@ -171,7 +168,6 @@ sub gps_form {
             is_gps       => 1,
         }
     );
-    my %args = @_;
 
     my $attributes = gps_form_attributes(%args);
 
