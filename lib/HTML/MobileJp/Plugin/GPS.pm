@@ -118,8 +118,8 @@ sub gps_a_attributes {
     my %args = validate(
         @_,
         +{
-            callback_url => qr{^https?://},
-            carrier      => qr{^[IEVH]$},
+            callback_url => +{ regex => qr{^https?://} },
+            carrier      => +{ regex => qr{^[IEVH]$} },
             is_gps       => 1,
         }
     );
@@ -131,8 +131,8 @@ sub gps_form_attributes {
     my %args = validate(
         @_,
         +{
-            callback_url => qr{^https?://},
-            carrier      => qr{^[IEVH]$},
+            callback_url => { regex => qr{^https?://} },
+            carrier      => { regex => qr{^[IEVH]$} },
             is_gps       => 1,
         }
     );
@@ -144,8 +144,8 @@ sub gps_a {
     my %args = validate(
         @_,
         +{
-            callback_url => qr{^https?://},
-            carrier      => qr{^[IEVH]$},
+            callback_url => { regex => qr{^https?://} },
+            carrier      => { regex => qr{^[IEVH]$} },
             is_gps       => 1,
         }
     );
@@ -163,8 +163,8 @@ sub gps_form {
     my %args = validate(
         @_,
         +{
-            callback_url => qr{^https?://},
-            carrier      => qr{^[IEVH]$},
+            callback_url => { regex => qr{^https?://} },
+            carrier      => { regex => qr{^[IEVH]$} },
             is_gps       => 1,
         }
     );
@@ -215,7 +215,7 @@ Tokuhiro Matsuno E<lt>tokuhirom aaaatttt gmail dotottto commmmmE<gt>
 
 =head1 SEE ALSO
 
-L<HTML::MobileJp>, L<http://www.au.kddi.com/ezfactory/tec/spec/wap_tag5.html>
+L<HTML::MobileJp>, L<http://www.au.kddi.com/ezfactory/tec/spec/wap_tag5.html>, L<HTTP::MobileAgent::Plugin::Locator>
 
 =head1 LICENSE
 

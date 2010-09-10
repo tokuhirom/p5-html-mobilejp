@@ -20,10 +20,10 @@ sub ezweb_object {
         +{
             url    => 1,
             mime_type   => 1,
-            copyright   => qr{^(?:yes|no)$},
+            copyright   => { regex => qr{^(?:yes|no)$} },
             standby     => 0,
-            disposition => qr{^dev.+$},
-            size        => qr{^[0-9]+$},
+            disposition => { regex => qr{^dev.+$} },
+            size        => { regex => qr{^[0-9]+$} },
             title       => 1,
         }
     );
