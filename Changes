@@ -1,5 +1,11 @@
 Revision history for Perl extension HTML::MobileJp
 
+0.07
+
+    - fixed bad usage for Params::Validate.
+      Now, parameter validation works correctly.
+      And, It works with P::V::PP.
+
 0.06
 
     - Plugin::GPS: support <form> tag.
