@@ -7,9 +7,7 @@ requires 'HTML::Entities'   => 1.35;
 requires 'Params::Validate' => 0.89;
 
 test_requires 'Test::Base';
-test_requires 'Test::More';
+test_requires 'Test::More' => 0.98;
 test_requires 'YAML';
 author_tests('xt');
-use_test_base;
-auto_include;
 WriteAll;
