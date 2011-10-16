@@ -1,2 +1,5 @@
 Makefile
 inc/
+MYMETA.*
+META.yml
+*.bak
